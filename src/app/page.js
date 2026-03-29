@@ -25,21 +25,29 @@ export default function Home() {
     const savedProduk = localStorage.getItem('pelpay_produk')
     const savedTransaksi = localStorage.getItem('pelpay_transaksi')
 
+    // jika ada data produk di localStorage, migrasikan ke bentuk konsisten
     if (savedProduk) {
-      const parsed = JSON.parse(savedProduk)
-      // migrasi: pastikan semua produk ada field yang diperlukan
-      const migrated = parsed.map(p => ({
-        id: p.id || generateId(),
-        nama: p.nama || 'Produk Tanpa Nama',
-        harga: p.harga || 0,
-        stok: p.stok || 0,
-        modal: p.modal || 0,
-        kategori: p.kategori || 'Lain-lain',
-      }))
-      setProduk(migrated)
+      try {
+        const parsed = JSON.parse(savedProduk)
+        const migrated = Array.isArray(parsed)
+          ? parsed.map((p) => ({
+              id: p.id || generateId(),
+              nama: p.nama || '',
+              harga: p.harga || 0,
+              stok: p.stok || 0,
+              modal: p.modal || 0,
+              kategori: p.kategori || '',
+            }))
+          : []
+        setProduk(migrated)
+      } catch (e) {
+        setProduk([])
+        localStorage.setItem('pelpay_produk', JSON.stringify([]))
+      }
     } else {
-      setProduk(seedProduk)
-      localStorage.setItem('pelpay_produk', JSON.stringify(seedProduk))
+      // tidak seed, mulai dari kosong
+      setProduk([])
+      localStorage.setItem('pelpay_produk', JSON.stringify([]))
     }
 
     if (savedTransaksi) {
@@ -49,9 +57,8 @@ export default function Home() {
 
   // save produk ke localStorage pas ada perubahan
   useEffect(() => {
-    if (produk.length > 0) {
-      localStorage.setItem('pelpay_produk', JSON.stringify(produk))
-    }
+    // selalu save, termasuk saat array kosong
+    localStorage.setItem('pelpay_produk', JSON.stringify(produk))
   }, [produk])
 
   // save transaksi ke localStorage pas ada perubahan
