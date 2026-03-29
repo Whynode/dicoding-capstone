@@ -1,145 +1,357 @@
 'use client'
 import { 
-  ShoppingCart, Package, AlertTriangle, Clock, BarChart3
+  TrendingUp, ShoppingCart, Package, AlertTriangle, 
+  Clock, Star, BarChart3, Users, Calendar, ArrowUp, ArrowDown 
 } from 'lucide-react'
 import { formatRupiah, hitungPendapatanHariIni, hitungJumlahTransaksiHariIni } from '../utils/helpers'
 
 export default function Dashboard({ produk, transaksi }) {
   const pendapatanHariIni = hitungPendapatanHariIni(transaksi)
   const transaksiHariIni = hitungJumlahTransaksiHariIni(transaksi)
-  const totalOmset = transaksi.reduce((sum, t) => sum + t.total, 0)
-  
-  // Transaksi Terakhir (5)
+  const totalProduk = produk.length
+
+  // hitung produk terjual hari ini
+  const transaksiHari = transaksi.filter((t) => {
+    const today = new Date()
+    const date = new Date(t.tanggal)
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    )
+  })
+
+  let produkTerjualHariIni = 0
+  transaksiHari.forEach((t) => {
+    t.items.forEach((item) => {
+      produkTerjualHariIni += item.jumlah
+    })
+  })
+
+  // produk stok rendah (batas 10)
+  const stokRendah = produk.filter((p) => p.stok < 10).slice(0, 8)
+
+  // transaksi terakhir (5 terakhir)
   const transaksiTerakhir = [...transaksi]
     .sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal))
     .slice(0, 5)
 
-  // Stok Rendah
-  const stokRendah = produk.filter((p) => p.stok < 10).slice(0, 8)
+  // hitung kategori terlaris
+  const kategoriCount = {}
+  transaksi.forEach(t => {
+    t.items.forEach(item => {
+      const produkItem = produk.find(p => p.id === item.produkId)
+      if (produkItem) {
+        kategoriCount[produkItem.kategori] = (kategoriCount[produkItem.kategori] || 0) + item.jumlah
+      }
+    })
+  })
+  const kategoriTerlaris = Object.entries(kategoriCount)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 5)
+
+  // hitung barang paling laku
+  const barangCount = {}
+  transaksi.forEach(t => {
+    t.items.forEach(item => {
+      barangCount[item.nama] = (barangCount[item.nama] || 0) + item.jumlah
+    })
+  })
+  const barangTerlaris = Object.entries(barangCount)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 5)
+
+  // total omset (semua waktu)
+  const totalOmset = transaksi.reduce((sum, t) => sum + t.total, 0)
+
+  // rata-rata per transaksi
+  const rataRata = transaksi.length > 0 ? totalOmset / transaksi.length : 0
+
+  const cards = [
+    {
+      title: 'Pemasukan Hari Ini',
+      value: formatRupiah(pendapatanHariIni),
+      icon: TrendingUp,
+      color: 'text-green-600',
+      bg: 'bg-green-50',
+      change: '+12%',
+      up: true,
+    },
+    {
+      title: 'Orderan Hari Ini',
+      value: transaksiHariIni,
+      icon: ShoppingCart,
+      color: 'text-blue-600',
+      bg: 'bg-blue-50',
+      change: '+5%',
+      up: true,
+    },
+    {
+      title: 'Jumlah Barang',
+      value: totalProduk,
+      icon: Package,
+      color: 'text-purple-600',
+      bg: 'bg-purple-50',
+      change: `${stokRendah.length} stok rendah`,
+      up: false,
+    },
+    {
+      title: 'Barang Laku Hari Ini',
+      value: produkTerjualHariIni,
+      icon: Star,
+      color: 'text-orange-600',
+      bg: 'bg-orange-50',
+      change: '+8%',
+      up: true,
+    },
+  ]
 
   return (
-    <div className="space-y-6 pb-8 animate-in fade-in duration-500">
-      
-      {/* Hero Section */}
-      <div className="text-center pt-6 pb-8 -mx-4 -mt-4 bg-white dark:bg-gray-800 shadow-[0_4px_20px_rgba(0,0,0,0.03)] px-4 rounded-b-[40px] mb-8">
-        <p className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">
-          Pendapatan Hari Ini
-        </p>
-        <h1 className="text-4xl sm:text-6xl font-black tracking-tighter text-gray-900 dark:text-white">
-          {formatRupiah(pendapatanHariIni)}
-        </h1>
-        <div className="mt-4 inline-flex items-center gap-1.5 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 px-4 py-1.5 rounded-full">
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">Live Update</span>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">Dashboard</h2>
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          {new Date().toLocaleDateString('id-ID', { 
+            weekday: 'long', 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+          })}
         </div>
       </div>
 
-      {/* Quick Metrics Scrollable */}
-      <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-        <div className="min-w-[140px] snap-center bg-white dark:bg-gray-800 p-5 rounded-3xl shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex flex-col justify-between">
-          <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center mb-4">
-            <ShoppingCart size={20} />
-          </div>
-          <div>
-            <p className="text-3xl font-bold">{transaksiHariIni}</p>
-            <p className="text-xs text-gray-500 font-medium">Orderan Baru</p>
-          </div>
-        </div>
-
-        <div className="min-w-[140px] snap-center bg-white dark:bg-gray-800 p-5 rounded-3xl shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex flex-col justify-between">
-          <div className="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/30 text-orange-600 flex items-center justify-center mb-4">
-            <BarChart3 size={20} />
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{formatRupiah(totalOmset).replace('Rp', '').trim()}</p>
-            <p className="text-xs text-gray-500 font-medium">Total Omset</p>
-          </div>
-        </div>
-
-        <div className="min-w-[140px] snap-center bg-white dark:bg-gray-800 p-5 rounded-3xl shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex flex-col justify-between">
-          <div className="w-10 h-10 rounded-full bg-purple-50 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center mb-4">
-            <Package size={20} />
-          </div>
-          <div>
-            <p className="text-3xl font-bold">{produk.length}</p>
-            <p className="text-xs text-gray-500 font-medium">Total Produk</p>
-          </div>
-        </div>
+      {/* Statistik Utama */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {cards.map((card) => {
+          const Icon = card.icon
+          return (
+            <div
+              key={card.title}
+              className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className={`${card.bg} p-2 square`}>
+                  <Icon className={card.color} size={20} />
+                </div>
+                <div className={`flex items-center text-xs ${
+                  card.up ? 'text-green-600' : 'text-red-500'
+                }`}>
+                  {card.up ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
+                  <span className="ml-1">{card.change}</span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{card.title}</p>
+              <p className="text-xl font-bold mt-1">{card.value}</p>
+            </div>
+          )
+        })}
       </div>
 
-      {/* Sections Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
-        {/* Transaksi List */}
-        <div>
-          <div className="flex items-center justify-between mb-4 px-2">
-            <h3 className="font-bold text-lg tracking-tight">Transaksi Terakhir</h3>
+      {/* Row 2: Statistik Kasir & Produk */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Transaksi Terakhir */}
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
+          <div className="flex items-center gap-2 mb-4">
+            <Clock className="text-blue-500" size={18} />
+            <h3 className="font-semibold">Transaksi Terakhir</h3>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-3xl p-2 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
-            {transaksiTerakhir.length === 0 ? (
-              <p className="text-gray-400 text-sm text-center py-8">Belum ada transaksi</p>
-            ) : (
-              <div className="space-y-1">
-                {transaksiTerakhir.map((t) => {
-                  const waktu = new Date(t.tanggal).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-                  return (
-                    <div key={t.id} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-2xl transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-gray-900/50 flex items-center justify-center text-gray-500 dark:text-gray-400">
-                          <Clock size={18} />
-                        </div>
-                        <div>
-                          <p className="font-semibold text-sm">Order #{t.id.slice(0,4).toUpperCase()}</p>
-                          <p className="text-xs text-gray-500">{t.items.length} item • {waktu}</p>
-                        </div>
-                      </div>
-                      <p className="font-bold text-sm text-gray-900 dark:text-white">
-                        {formatRupiah(t.total)}
-                      </p>
+          {transaksiTerakhir.length === 0 ? (
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">Belum ada transaksi</p>
+          ) : (
+            <div className="space-y-3">
+              {transaksiTerakhir.map((t) => {
+                const tanggal = new Date(t.tanggal)
+                const waktu = tanggal.toLocaleTimeString('id-ID', { 
+                  hour: '2-digit', 
+                  minute: '2-digit' 
+                })
+                return (
+                  <div key={t.id} className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
+                    <div>
+                      <p className="text-sm font-medium">{waktu}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{t.items.length} item</p>
                     </div>
-                  )
-                })}
-              </div>
-            )}
-          </div>
+                    <p className="text-sm font-semibold text-primary">
+                      {formatRupiah(t.total)}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
 
-        {/* Stok Warning */}
-        <div>
-          <div className="flex items-center justify-between mb-4 px-2">
-            <h3 className="font-bold text-lg tracking-tight">Stok Kritis</h3>
-            {stokRendah.length > 0 && (
-              <span className="bg-red-50 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full">{stokRendah.length} Peringatan</span>
-            )}
+        {/* Barang Paling Laku */}
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="text-orange-500" size={18} />
+            <h3 className="font-semibold">Barang Paling Laku</h3>
           </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-3xl p-2 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
-            {stokRendah.length === 0 ? (
-              <p className="text-gray-400 text-sm text-center py-8">Semua stok aman 🎉</p>
-            ) : (
-              <div className="space-y-1 max-h-60 overflow-y-auto">
-                {stokRendah.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-2xl transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-500/10 flex items-center justify-center text-red-500">
-                        <AlertTriangle size={18} />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-sm">{item.nama}</p>
-                        <p className="text-xs text-gray-500">{item.kategori}</p>
-                      </div>
+          
+          {barangTerlaris.length === 0 ? (
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">Belum ada data penjualan</p>
+          ) : (
+            <div className="space-y-3">
+              {barangTerlaris.map(([nama, jumlah], index) => {
+                const maxJumlah = barangTerlaris[0][1]
+                const persentase = (jumlah / maxJumlah) * 100
+                return (
+                  <div key={nama}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium truncate">{nama}</span>
+                      <span className="text-gray-500 dark:text-gray-400">{jumlah} terjual</span>
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-sm text-red-500">{item.stok} Sisa</p>
+                    <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 square">
+                      <div 
+                        className="bg-orange-500 h-2 square" 
+                        style={{ width: `${persentase}%` }}
+                      />
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
+                )
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Kategori Terlaris */}
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
+          <div className="flex items-center gap-2 mb-4">
+            <Package className="text-purple-500" size={18} />
+            <h3 className="font-semibold">Kategori Terlaris</h3>
           </div>
+          
+          {kategoriTerlaris.length === 0 ? (
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">Belum ada data penjualan</p>
+          ) : (
+            <div className="space-y-3">
+              {kategoriTerlaris.map(([kategori, jumlah], index) => {
+                const maxJumlah = kategoriTerlaris[0][1]
+                const persentase = (jumlah / maxJumlah) * 100
+                return (
+                  <div key={kategori}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium">{kategori}</span>
+                      <span className="text-gray-500 dark:text-gray-400">{jumlah} item</span>
+                    </div>
+                    <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 square">
+                      <div 
+                        className="bg-purple-500 h-2 square" 
+                        style={{ width: `${persentase}%` }}
+                      />
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
       </div>
-    
+
+      {/* Row 3: Statistik Lain & Stok Rendah */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Statistik Tambahan */}
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="text-green-500" size={18} />
+            <h3 className="font-semibold">Statistik Warung</h3>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900/50 square">
+              <p className="text-2xl font-bold text-gray-800">{transaksi.length}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Total Transaksi</p>
+            </div>
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900/50 square">
+              <p className="text-2xl font-bold text-gray-800">{formatRupiah(totalOmset)}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Omset Total</p>
+            </div>
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900/50 square">
+              <p className="text-2xl font-bold text-gray-800">{formatRupiah(rataRata)}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Rata-rata/Transaksi</p>
+            </div>
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900/50 square">
+              <p className="text-2xl font-bold text-gray-800">
+                {produk.filter(p => p.stok > 0).length}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Barang Tersedia</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Barang Mau Habis */}
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="text-red-500" size={18} />
+              <h3 className="font-semibold">Barang Mau Habis</h3>
+            </div>
+            <span className="text-xs bg-red-100 text-red-600 px-2 py-1 square">
+              {stokRendah.length} barang
+            </span>
+          </div>
+          
+          {stokRendah.length === 0 ? (
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">Stok semua aman</p>
+          ) : (
+            <div className="space-y-3 max-h-64 overflow-y-auto">
+              {stokRendah.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
+                >
+                  <div className="flex-1">
+                    <p className="font-medium text-sm">{item.nama}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{item.kategori}</p>
+                  </div>
+                  <div className="text-right">
+                    <span className={`text-sm font-semibold ${
+                      item.stok < 3 ? 'text-red-600' : 'text-orange-500'
+                    }`}>
+                      {item.stok} tersisa
+                    </span>
+                    <div className="w-20 bg-gray-100 dark:bg-gray-800 h-1.5 mt-1 square">
+                      <div 
+                        className={`h-1.5 square ${
+                          item.stok < 3 ? 'bg-red-500' : 'bg-orange-400'
+                        }`}
+                        style={{ width: `${(item.stok / 10) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
+        <div className="flex items-center gap-2 mb-4">
+          <ShoppingCart className="text-primary" size={18} />
+          <h3 className="font-semibold">Aksi Cepat</h3>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button className="p-4 bg-orange-50 hover:bg-orange-100 square transition-colors text-center">
+            <ShoppingCart className="mx-auto text-primary mb-2" size={24} />
+            <p className="text-sm font-medium">Kasir Baru</p>
+          </button>
+          <button className="p-4 bg-blue-50 hover:bg-blue-100 square transition-colors text-center">
+            <Package className="mx-auto text-blue-600 mb-2" size={24} />
+            <p className="text-sm font-medium">Tambah Barang</p>
+          </button>
+          <button className="p-4 bg-green-50 hover:bg-green-100 square transition-colors text-center">
+            <Calendar className="mx-auto text-green-600 mb-2" size={24} />
+            <p className="text-sm font-medium">Lihat Laporan</p>
+          </button>
+          <button className="p-4 bg-purple-50 hover:bg-purple-100 square transition-colors text-center">
+            <Users className="mx-auto text-purple-600 mb-2" size={24} />
+            <p className="text-sm font-medium">Kelola Stok</p>
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
