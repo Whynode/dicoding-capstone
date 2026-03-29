@@ -83,6 +83,11 @@ export default function Home() {
     setProduk((prev) => prev.filter((p) => p.id !== id))
   }
 
+  // hapus beberapa produk sekaligus
+  const hapusTerpilihProduk = (ids) => {
+    setProduk((prev) => prev.filter((p) => !ids.includes(p.id)))
+  }
+
   // tambah ke keranjang
   const tambahKeKeranjang = (item) => {
     setKeranjang((prev) => {
@@ -218,6 +223,7 @@ export default function Home() {
             onTambah={bukaTambahProduk}
             onEdit={bukaEditProduk}
             onHapus={hapusProduk}
+            onHapusTerpilih={hapusTerpilihProduk}
           />
         )
       case 'Riwayat':
