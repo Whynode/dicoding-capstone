@@ -10,7 +10,6 @@ import ModalDetail from '../components/ModalDetail'
 import { seedProduk } from '../data/produk'
 import { generateId } from '../utils/helpers'
 import { supabase } from '../utils/supabase'
-import { Store } from 'lucide-react'
 
 export default function Home() {
   const [activePage, setActivePage] = useState('Dashboard')
@@ -351,15 +350,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
-      <header className="bg-white border-b-2 border-gray-900 px-4 py-3 sticky top-0 z-40 flex flex-col items-center justify-center shadow-sm square">
-        <div className="flex items-center gap-2">
-          <div className="bg-primary text-white p-1 square">
-            <Store size={20} strokeWidth={2.5} />
-          </div>
-          <h1 className="text-xl sm:text-2xl font-black tracking-tighter text-gray-900 uppercase">
-            PEL<span className="text-primary">PAY</span>
-          </h1>
-        </div>
+      <header className="bg-white border-b border-primary px-4 py-3 sticky top-0 z-40 flex flex-col items-center justify-center shadow-sm rounded-b-[20px]">
+        <h1 className="text-xl sm:text-2xl font-black tracking-tighter text-gray-900 uppercase">
+          PEL<span className="text-primary">PAY</span>
+        </h1>
         <p className="text-[10px] sm:text-[11px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-1">
           Kasir Warung Pintar
         </p>

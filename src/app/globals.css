@@ -10,6 +10,6 @@
 
 @layer utilities {
   .square {
-    @apply rounded-none;
+    @apply rounded-[20px];
   }
 }
