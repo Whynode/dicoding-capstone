@@ -69,19 +69,19 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
         </button>
       </div>
 
-      <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
+      <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
         <div className="flex flex-col sm:flex-row gap-4">
           <input
             type="text"
             placeholder="Cari barang..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
+            className="flex-1 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 px-4 py-2 square focus:outline-none focus:border-primary"
           />
           <select
             value={filterKategori}
             onChange={(e) => setFilterKategori(e.target.value)}
-            className="shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary bg-white"
+            className="shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 px-4 py-2 square focus:outline-none focus:border-primary bg-white dark:bg-gray-800"
           >
             <option value="">Semua Kategori</option>
             {kategoriList.map((kategori) => (
@@ -112,7 +112,7 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
             </button>
             <button
               onClick={() => setSelectedItems([])}
-              className="bg-gray-200 text-gray-700 px-4 py-2 square hover:bg-gray-300"
+              className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 square hover:bg-gray-300"
             >
               Batal
             </button>
@@ -120,14 +120,14 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
         </div>
       )}
 
-      <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 square overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 square overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
             <tr>
-              <th className="px-4 py-3 text-sm font-semibold text-gray-600 w-12">
+              <th className="px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400 w-12">
                 <button
                   onClick={toggleSelectAll}
-                  className="text-gray-500 hover:text-primary"
+                  className="text-gray-500 dark:text-gray-400 hover:text-primary"
                   title={allSelected ? "Batalkan semua" : "Pilih semua"}
                 >
                   {allSelected ? (
@@ -144,19 +144,19 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
                   )}
                 </button>
               </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Barang
               </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Kategori
               </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Harga
               </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Stok
               </th>
-              <th className="text-right px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-right px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Aksi
               </th>
             </tr>
@@ -167,12 +167,12 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
               return (
                 <tr 
                   key={item.id} 
-                  className={`hover:bg-gray-50 ${isSelected ? 'bg-orange-50' : ''}`}
+                  className={`hover:bg-gray-50 dark:bg-gray-900/50 ${isSelected ? 'bg-orange-50' : ''}`}
                 >
                   <td className="px-4 py-3">
                     <button
                       onClick={() => toggleSelect(item.id)}
-                      className="text-gray-500 hover:text-primary"
+                      className="text-gray-500 dark:text-gray-400 hover:text-primary"
                     >
                       {isSelected ? (
                         <CheckSquare size={18} className="text-primary" />
@@ -182,7 +182,7 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
                     </button>
                   </td>
                   <td className="px-4 py-3 font-medium">{item.nama}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500">
+                  <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                     {item.kategori}
                   </td>
                   <td className="px-4 py-3 text-primary">
@@ -191,7 +191,7 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
                   <td className="px-4 py-3">
                     <span
                       className={`font-semibold ${
-                        item.stok < 5 ? 'text-red-500' : 'text-gray-700'
+                        item.stok < 5 ? 'text-red-500' : 'text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       {item.stok}
@@ -225,7 +225,7 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
           </tbody>
         </table>
         {filtered.length === 0 && (
-          <p className="text-center py-8 text-gray-500">
+          <p className="text-center py-8 text-gray-500 dark:text-gray-400">
             Barang nggak ketemu
           </p>
         )}
@@ -233,7 +233,7 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
 
       {/* Footer dengan info dan hapus semua */}
       {filtered.length > 0 && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm text-gray-500">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400">
           <div>
             Menampilkan {filtered.length} dari {produk.length} barang
             {selectedItems.length > 0 && (

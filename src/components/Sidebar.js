@@ -13,7 +13,7 @@ export default function Sidebar({ activePage, setActivePage }) {
 
   // Digunakan sebagai Bottom Navigation ala GoPay untuk mobile & desktop
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2 sm:px-6 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 px-2 sm:px-6 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
       <nav className="flex justify-between items-center h-16 max-w-2xl mx-auto">
         {menu.map((item) => {
           const Icon = item.icon
@@ -23,7 +23,7 @@ export default function Sidebar({ activePage, setActivePage }) {
               key={item.name}
               onClick={() => setActivePage(item.name)}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-                isActive ? 'text-primary' : 'text-gray-400 hover:text-gray-900'
+                isActive ? 'text-primary' : 'text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:text-gray-100'
               }`}
             >
               <div className={`p-1 rounded-full ${isActive ? 'bg-orange-50' : 'bg-transparent'}`}>

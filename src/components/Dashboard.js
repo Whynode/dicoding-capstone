@@ -110,7 +110,7 @@ export default function Dashboard({ produk, transaksi }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Dashboard</h2>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           {new Date().toLocaleDateString('id-ID', { 
             weekday: 'long', 
             day: 'numeric', 
@@ -127,7 +127,7 @@ export default function Dashboard({ produk, transaksi }) {
           return (
             <div
               key={card.title}
-              className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className={`${card.bg} p-2 square`}>
@@ -140,7 +140,7 @@ export default function Dashboard({ produk, transaksi }) {
                   <span className="ml-1">{card.change}</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-500">{card.title}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{card.title}</p>
               <p className="text-xl font-bold mt-1">{card.value}</p>
             </div>
           )
@@ -150,14 +150,14 @@ export default function Dashboard({ produk, transaksi }) {
       {/* Row 2: Statistik Kasir & Produk */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Transaksi Terakhir */}
-        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
           <div className="flex items-center gap-2 mb-4">
             <Clock className="text-blue-500" size={18} />
             <h3 className="font-semibold">Transaksi Terakhir</h3>
           </div>
           
           {transaksiTerakhir.length === 0 ? (
-            <p className="text-gray-500 text-sm text-center py-4">Belum ada transaksi</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">Belum ada transaksi</p>
           ) : (
             <div className="space-y-3">
               {transaksiTerakhir.map((t) => {
@@ -167,10 +167,10 @@ export default function Dashboard({ produk, transaksi }) {
                   minute: '2-digit' 
                 })
                 return (
-                  <div key={t.id} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
+                  <div key={t.id} className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div>
                       <p className="text-sm font-medium">{waktu}</p>
-                      <p className="text-xs text-gray-500">{t.items.length} item</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{t.items.length} item</p>
                     </div>
                     <p className="text-sm font-semibold text-primary">
                       {formatRupiah(t.total)}
@@ -183,14 +183,14 @@ export default function Dashboard({ produk, transaksi }) {
         </div>
 
         {/* Barang Paling Laku */}
-        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="text-orange-500" size={18} />
             <h3 className="font-semibold">Barang Paling Laku</h3>
           </div>
           
           {barangTerlaris.length === 0 ? (
-            <p className="text-gray-500 text-sm text-center py-4">Belum ada data penjualan</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">Belum ada data penjualan</p>
           ) : (
             <div className="space-y-3">
               {barangTerlaris.map(([nama, jumlah], index) => {
@@ -200,9 +200,9 @@ export default function Dashboard({ produk, transaksi }) {
                   <div key={nama}>
                     <div className="flex justify-between text-sm mb-1">
                       <span className="font-medium truncate">{nama}</span>
-                      <span className="text-gray-500">{jumlah} terjual</span>
+                      <span className="text-gray-500 dark:text-gray-400">{jumlah} terjual</span>
                     </div>
-                    <div className="w-full bg-gray-100 h-2 square">
+                    <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 square">
                       <div 
                         className="bg-orange-500 h-2 square" 
                         style={{ width: `${persentase}%` }}
@@ -216,14 +216,14 @@ export default function Dashboard({ produk, transaksi }) {
         </div>
 
         {/* Kategori Terlaris */}
-        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
           <div className="flex items-center gap-2 mb-4">
             <Package className="text-purple-500" size={18} />
             <h3 className="font-semibold">Kategori Terlaris</h3>
           </div>
           
           {kategoriTerlaris.length === 0 ? (
-            <p className="text-gray-500 text-sm text-center py-4">Belum ada data penjualan</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">Belum ada data penjualan</p>
           ) : (
             <div className="space-y-3">
               {kategoriTerlaris.map(([kategori, jumlah], index) => {
@@ -233,9 +233,9 @@ export default function Dashboard({ produk, transaksi }) {
                   <div key={kategori}>
                     <div className="flex justify-between text-sm mb-1">
                       <span className="font-medium">{kategori}</span>
-                      <span className="text-gray-500">{jumlah} item</span>
+                      <span className="text-gray-500 dark:text-gray-400">{jumlah} item</span>
                     </div>
-                    <div className="w-full bg-gray-100 h-2 square">
+                    <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 square">
                       <div 
                         className="bg-purple-500 h-2 square" 
                         style={{ width: `${persentase}%` }}
@@ -252,36 +252,36 @@ export default function Dashboard({ produk, transaksi }) {
       {/* Row 3: Statistik Lain & Stok Rendah */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Statistik Tambahan */}
-        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="text-green-500" size={18} />
             <h3 className="font-semibold">Statistik Warung</h3>
           </div>
           
           <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-gray-50 square">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900/50 square">
               <p className="text-2xl font-bold text-gray-800">{transaksi.length}</p>
-              <p className="text-sm text-gray-500">Total Transaksi</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Total Transaksi</p>
             </div>
-            <div className="text-center p-4 bg-gray-50 square">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900/50 square">
               <p className="text-2xl font-bold text-gray-800">{formatRupiah(totalOmset)}</p>
-              <p className="text-sm text-gray-500">Omset Total</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Omset Total</p>
             </div>
-            <div className="text-center p-4 bg-gray-50 square">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900/50 square">
               <p className="text-2xl font-bold text-gray-800">{formatRupiah(rataRata)}</p>
-              <p className="text-sm text-gray-500">Rata-rata/Transaksi</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Rata-rata/Transaksi</p>
             </div>
-            <div className="text-center p-4 bg-gray-50 square">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900/50 square">
               <p className="text-2xl font-bold text-gray-800">
                 {produk.filter(p => p.stok > 0).length}
               </p>
-              <p className="text-sm text-gray-500">Barang Tersedia</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Barang Tersedia</p>
             </div>
           </div>
         </div>
 
         {/* Barang Mau Habis */}
-        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
+        <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <AlertTriangle className="text-red-500" size={18} />
@@ -293,17 +293,17 @@ export default function Dashboard({ produk, transaksi }) {
           </div>
           
           {stokRendah.length === 0 ? (
-            <p className="text-gray-500 text-sm text-center py-4">Stok semua aman</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">Stok semua aman</p>
           ) : (
             <div className="space-y-3 max-h-64 overflow-y-auto">
               {stokRendah.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
+                  className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
                 >
                   <div className="flex-1">
                     <p className="font-medium text-sm">{item.nama}</p>
-                    <p className="text-xs text-gray-500">{item.kategori}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{item.kategori}</p>
                   </div>
                   <div className="text-right">
                     <span className={`text-sm font-semibold ${
@@ -311,7 +311,7 @@ export default function Dashboard({ produk, transaksi }) {
                     }`}>
                       {item.stok} tersisa
                     </span>
-                    <div className="w-20 bg-gray-100 h-1.5 mt-1 square">
+                    <div className="w-20 bg-gray-100 dark:bg-gray-800 h-1.5 mt-1 square">
                       <div 
                         className={`h-1.5 square ${
                           item.stok < 3 ? 'bg-red-500' : 'bg-orange-400'
@@ -328,7 +328,7 @@ export default function Dashboard({ produk, transaksi }) {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
+      <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-4 square">
         <div className="flex items-center gap-2 mb-4">
           <ShoppingCart className="text-primary" size={18} />
           <h3 className="font-semibold">Aksi Cepat</h3>

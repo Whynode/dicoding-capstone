@@ -72,14 +72,14 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md square p-6">
+      <div className="bg-white dark:bg-gray-800 w-full max-w-md square p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-bold">
             {produk ? 'Edit Barang' : 'Tambah Barang'}
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300"
           >
             <X size={20} />
           </button>
@@ -87,26 +87,26 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Nama Barang
             </label>
             <input
               type="text"
               value={form.nama}
               onChange={(e) => setForm({ ...form, nama: e.target.value })}
-              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
+              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 px-4 py-2 square focus:outline-none focus:border-primary"
               placeholder="Misal: Nasi Goreng"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Kategori
             </label>
             <select
               value={form.kategori}
               onChange={(e) => setForm({ ...form, kategori: e.target.value })}
-              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary bg-white"
+              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 px-4 py-2 square focus:outline-none focus:border-primary bg-white dark:bg-gray-800"
             >
               <option value="">Pilih Kategori</option>
               {kategoriOptions.map((kategori) => (
@@ -119,28 +119,28 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Harga Jual
               </label>
               <input
                 type="number"
                 value={form.harga}
                 onChange={(e) => setForm({ ...form, harga: e.target.value })}
-                className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
+                className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 px-4 py-2 square focus:outline-none focus:border-primary"
                 placeholder="Rp"
                 min="0"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Harga Modal
               </label>
               <input
                 type="number"
                 value={form.modal}
                 onChange={(e) => setForm({ ...form, modal: e.target.value })}
-                className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
+                className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 px-4 py-2 square focus:outline-none focus:border-primary"
                 placeholder="Rp"
                 min="0"
               />
@@ -148,14 +148,14 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Stok
             </label>
             <input
               type="number"
               value={form.stok}
               onChange={(e) => setForm({ ...form, stok: e.target.value })}
-              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
+              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 px-4 py-2 square focus:outline-none focus:border-primary"
               placeholder="Jumlah stok"
               min="0"
             />
@@ -165,7 +165,7 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-100 text-gray-700 py-2 square hover:bg-gray-200"
+              className="flex-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-2 square hover:bg-gray-200 dark:bg-gray-700"
             >
               Batal
             </button>

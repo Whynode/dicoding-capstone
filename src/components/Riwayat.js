@@ -33,7 +33,7 @@ export default function Riwayat({ transaksi, produk, onLihatDetail, onHapus }) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold">Riwayat Penjualan</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             Laba:{' '}
             <span className="font-semibold text-green-600">
               {formatRupiah(totalKeuntungan)}
@@ -42,17 +42,17 @@ export default function Riwayat({ transaksi, produk, onLihatDetail, onHapus }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-sm text-gray-600">Lihat Tanggal:</label>
+          <label className="text-sm text-gray-600 dark:text-gray-400">Lihat Tanggal:</label>
           <input
             type="date"
             value={filterTanggal}
             onChange={(e) => setFilterTanggal(e.target.value)}
-            className="shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-3 py-2 square focus:outline-none focus:border-primary"
+            className="shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 px-3 py-2 square focus:outline-none focus:border-primary"
           />
           {filterTanggal && (
             <button
               onClick={() => setFilterTanggal('')}
-              className="text-sm text-gray-500 hover:text-gray-700"
+              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300"
             >
               Semua
             </button>
@@ -60,23 +60,23 @@ export default function Riwayat({ transaksi, produk, onLihatDetail, onHapus }) {
         </div>
       </div>
 
-      <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 square overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 square overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
             <tr>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 ID
               </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Tanggal
               </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Total
               </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Laba
               </th>
-              <th className="text-right px-4 py-3 text-sm font-semibold text-gray-600">
+              <th className="text-right px-4 py-3 text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Aksi
               </th>
             </tr>
@@ -104,7 +104,7 @@ export default function Riwayat({ transaksi, produk, onLihatDetail, onHapus }) {
               })
 
               return (
-                <tr key={transaksi.id} className="hover:bg-gray-50">
+                <tr key={transaksi.id} className="hover:bg-gray-50 dark:bg-gray-900/50">
                   <td className="px-4 py-3 font-mono text-sm">
                     {String(transaksi.id || '').slice(0, 8)}...
                   </td>
@@ -139,7 +139,7 @@ export default function Riwayat({ transaksi, produk, onLihatDetail, onHapus }) {
           </tbody>
         </table>
         {sorted.length === 0 && (
-          <p className="text-center py-8 text-gray-500">
+          <p className="text-center py-8 text-gray-500 dark:text-gray-400">
             Belum ada transaksi
           </p>
         )}

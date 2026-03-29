@@ -13,6 +13,7 @@ import { supabase } from '../utils/supabase'
 
 export default function Home() {
   const [activePage, setActivePage] = useState('Dashboard')
+  const [isDarkMode, setIsDarkMode] = useState(false)
   const [produk, setProduk] = useState([])
   const [transaksi, setTransaksi] = useState([])
   const [keranjang, setKeranjang] = useState([])
@@ -20,6 +21,27 @@ export default function Home() {
   const [produkEdit, setProdukEdit] = useState(null)
   const [transaksiDipilih, setTransaksiDipilih] = useState(null)
   const [modalDetailOpen, setModalDetailOpen] = useState(false)
+
+  // load dark mode preference
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('pelpay_theme')
+    if (storedTheme === 'dark') {
+      setIsDarkMode(true)
+      document.documentElement.classList.add('dark')
+    }
+  }, [])
+
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode
+    setIsDarkMode(newMode)
+    if (newMode) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('pelpay_theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('pelpay_theme', 'light')
+    }
+  }
 
   // load data dari Supabase saat awal render
   useEffect(() => {
@@ -276,26 +298,26 @@ export default function Home() {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Laporan</h2>
-            <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-8 square text-center">
-              <div className="text-gray-400 mb-4">
+            <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-8 square text-center">
+              <div className="text-gray-400 dark:text-gray-500 mb-4">
                 <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-700 mb-2">Fitur Laporan</h3>
-              <p className="text-gray-500 mb-4">Sedang dalam pengembangan</p>
+              <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">Fitur Laporan</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">Sedang dalam pengembangan</p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                <div className="p-4 bg-gray-50 square">
-                  <p className="font-medium text-gray-700">Laporan Harian</p>
-                  <p className="text-sm text-gray-500">Ringkasan penjualan per hari</p>
+                <div className="p-4 bg-gray-50 dark:bg-gray-900/50 square">
+                  <p className="font-medium text-gray-700 dark:text-gray-300">Laporan Harian</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Ringkasan penjualan per hari</p>
                 </div>
-                <div className="p-4 bg-gray-50 square">
-                  <p className="font-medium text-gray-700">Laporan Bulanan</p>
-                  <p className="text-sm text-gray-500">Tren penjualan bulanan</p>
+                <div className="p-4 bg-gray-50 dark:bg-gray-900/50 square">
+                  <p className="font-medium text-gray-700 dark:text-gray-300">Laporan Bulanan</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Tren penjualan bulanan</p>
                 </div>
-                <div className="p-4 bg-gray-50 square">
-                  <p className="font-medium text-gray-700">Laporan Stok</p>
-                  <p className="text-sm text-gray-500">Pergerakan inventory</p>
+                <div className="p-4 bg-gray-50 dark:bg-gray-900/50 square">
+                  <p className="font-medium text-gray-700 dark:text-gray-300">Laporan Stok</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Pergerakan inventory</p>
                 </div>
               </div>
             </div>
@@ -305,25 +327,25 @@ export default function Home() {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Pengaturan</h2>
-            <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-8 square text-center">
-              <div className="text-gray-400 mb-4">
+            <div className="bg-white dark:bg-gray-800 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 dark:border-gray-700 p-8 square text-center">
+              <div className="text-gray-400 dark:text-gray-500 mb-4">
                 <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-700 mb-2">Pengaturan Sistem</h3>
-              <p className="text-gray-500 mb-4">Sedang dalam pengembangan</p>
+              <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">Pengaturan Sistem</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">Sedang dalam pengembangan</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <div className="p-4 bg-gray-50 square text-left">
-                  <p className="font-medium text-gray-700 mb-2">Profil Warung</p>
+                <div className="p-4 bg-gray-50 dark:bg-gray-900/50 square text-left">
+                  <p className="font-medium text-gray-700 dark:text-gray-300 mb-2">Profil Warung</p>
                   <div className="space-y-2">
                     <input type="text" placeholder="Nama Warung" className="w-full border px-3 py-2 square text-sm" defaultValue="Warung Madura" />
                     <input type="text" placeholder="Alamat" className="w-full border px-3 py-2 square text-sm" defaultValue="Jakarta" />
                   </div>
                 </div>
-                <div className="p-4 bg-gray-50 square text-left">
-                  <p className="font-medium text-gray-700 mb-2">Pengaturan Lain</p>
+                <div className="p-4 bg-gray-50 dark:bg-gray-900/50 square text-left">
+                  <p className="font-medium text-gray-700 dark:text-gray-300 mb-2">Pengaturan Lain</p>
                   <div className="space-y-2 text-sm">
                     <label className="flex items-center gap-2">
                       <input type="checkbox" defaultChecked />
@@ -333,8 +355,13 @@ export default function Home() {
                       <input type="checkbox" defaultChecked />
                       <span>Notifikasi stok rendah</span>
                     </label>
-                    <label className="flex items-center gap-2">
-                      <input type="checkbox" />
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={isDarkMode} 
+                        onChange={toggleDarkMode}
+                        className="w-4 h-4 cursor-pointer"
+                      />
                       <span>Mode gelap</span>
                     </label>
                   </div>
@@ -349,12 +376,12 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <header className="bg-white border-b border-primary px-4 py-3 sticky top-0 z-40 flex flex-col items-center justify-center shadow-sm rounded-b-[20px]">
-        <h1 className="text-xl sm:text-2xl font-black tracking-tighter text-gray-900 uppercase">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900/50 dark:bg-gray-900 pb-24 transition-colors duration-200">
+      <header className="bg-white dark:bg-gray-800 dark:bg-gray-800 border-b border-primary px-4 py-3 sticky top-0 z-40 flex flex-col items-center justify-center shadow-sm rounded-b-[20px] transition-colors duration-200">
+        <h1 className="text-xl sm:text-2xl font-black tracking-tighter text-gray-900 dark:text-gray-100 dark:text-white uppercase transition-colors duration-200">
           PEL<span className="text-primary">PAY</span>
         </h1>
-        <p className="text-[10px] sm:text-[11px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-1">
+        <p className="text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 dark:text-gray-400 font-bold tracking-[0.2em] uppercase mt-1 transition-colors duration-200">
           Kasir Warung Pintar
         </p>
       </header>
