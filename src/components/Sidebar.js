@@ -11,10 +11,10 @@ export default function Sidebar({ activePage, setActivePage }) {
     { name: 'Pengaturan', icon: Settings },
   ]
 
-  // Digunakan sebagai Bottom Navigation ala GoPay untuk mobile & desktop
+  // Ultra-minimalist bottom navigation
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 px-2 sm:px-6 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
-      <nav className="flex justify-between items-center h-16 max-w-2xl mx-auto">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-100 dark:border-gray-800 z-50 pb-safe sm:pb-0 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <nav className="flex justify-around items-center h-16 max-w-md mx-auto px-4">
         {menu.map((item) => {
           const Icon = item.icon
           const isActive = activePage === item.name
@@ -22,16 +22,21 @@ export default function Sidebar({ activePage, setActivePage }) {
             <button
               key={item.name}
               onClick={() => setActivePage(item.name)}
-              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-                isActive ? 'text-primary' : 'text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:text-gray-100'
-              }`}
+              className="relative flex flex-col items-center justify-center w-12 h-12 outline-none tap-highlight-transparent"
             >
-              <div className={`p-1 rounded-full ${isActive ? 'bg-orange-50' : 'bg-transparent'}`}>
-                <Icon size={isActive ? 22 : 20} className={isActive ? 'stroke-[2.5px]' : ''} />
-              </div>
-              <span className={`text-[10px] sm:text-[11px] truncate ${isActive ? 'font-semibold' : 'font-medium'}`}>
-                {item.name}
-              </span>
+              <Icon 
+                size={26} 
+                className={`transition-all duration-300 ease-out ${
+                  isActive 
+                    ? 'text-primary stroke-[2.5px] -translate-y-1' 
+                    : 'text-gray-400 dark:text-gray-500 stroke-2 hover:text-gray-600'
+                }`} 
+              />
+              <div 
+                className={`absolute bottom-0 w-1.5 h-1.5 rounded-full bg-primary transition-all duration-300 ${
+                  isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+                }`} 
+              />
             </button>
           )
         })}
