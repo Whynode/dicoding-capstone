@@ -47,7 +47,7 @@ export default function Riwayat({ transaksi, produk, onLihatDetail, onHapus }) {
             type="date"
             value={filterTanggal}
             onChange={(e) => setFilterTanggal(e.target.value)}
-            className="border border-gray-200 px-3 py-2 square focus:outline-none focus:border-primary"
+            className="shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-3 py-2 square focus:outline-none focus:border-primary"
           />
           {filterTanggal && (
             <button
@@ -60,7 +60,7 @@ export default function Riwayat({ transaksi, produk, onLihatDetail, onHapus }) {
         </div>
       </div>
 
-      <div className="bg-white border border-gray-200 square overflow-hidden">
+      <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 square overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>

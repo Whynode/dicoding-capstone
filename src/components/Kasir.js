@@ -21,13 +21,13 @@ export default function Kasir({
   )
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 h-full">
+    <div className="flex flex-col lg:flex-row gap-4 sm:p-4 h-full">
       {/* Daftar Produk */}
       <div className="flex-1">
         <h2 className="text-2xl font-bold mb-4">Kasir</h2>
         
         {/* Search bar */}
-        <div className="bg-white border border-gray-200 p-4 square mb-4">
+        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square mb-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
             <input
@@ -35,7 +35,7 @@ export default function Kasir({
               placeholder="Cari barang..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full border border-gray-200 pl-10 pr-4 py-2 square focus:outline-none focus:border-primary"
+              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 pl-10 pr-4 py-2 square focus:outline-none focus:border-primary"
             />
           </div>
         </div>
@@ -46,7 +46,7 @@ export default function Kasir({
               key={item.id}
               onClick={() => tambahKeKeranjang(item)}
               disabled={item.stok === 0}
-              className={`bg-white border border-gray-200 p-4 square text-left hover:bg-orange-50 transition-colors ${
+              className={`bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square text-left hover:bg-orange-50 transition-colors ${
                 item.stok === 0 ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
@@ -69,7 +69,7 @@ export default function Kasir({
       </div>
 
       {/* Keranjang */}
-      <div className="w-full lg:w-96 bg-white border border-gray-200 p-6 square flex flex-col">
+      <div className="w-full lg:w-96 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 sm:p-4 square flex flex-col">
         <div className="flex items-center gap-2 mb-4">
           <ShoppingCart size={20} />
           <h3 className="font-semibold">Belanjaan</h3>

@@ -127,7 +127,7 @@ export default function Dashboard({ produk, transaksi }) {
           return (
             <div
               key={card.title}
-              className="bg-white border border-gray-200 p-5 square hover:shadow-md transition-shadow"
+              className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className={`${card.bg} p-2 square`}>
@@ -150,7 +150,7 @@ export default function Dashboard({ produk, transaksi }) {
       {/* Row 2: Statistik Kasir & Produk */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Transaksi Terakhir */}
-        <div className="bg-white border border-gray-200 p-5 square">
+        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
           <div className="flex items-center gap-2 mb-4">
             <Clock className="text-blue-500" size={18} />
             <h3 className="font-semibold">Transaksi Terakhir</h3>
@@ -183,7 +183,7 @@ export default function Dashboard({ produk, transaksi }) {
         </div>
 
         {/* Barang Paling Laku */}
-        <div className="bg-white border border-gray-200 p-5 square">
+        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="text-orange-500" size={18} />
             <h3 className="font-semibold">Barang Paling Laku</h3>
@@ -216,7 +216,7 @@ export default function Dashboard({ produk, transaksi }) {
         </div>
 
         {/* Kategori Terlaris */}
-        <div className="bg-white border border-gray-200 p-5 square">
+        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
           <div className="flex items-center gap-2 mb-4">
             <Package className="text-purple-500" size={18} />
             <h3 className="font-semibold">Kategori Terlaris</h3>
@@ -252,7 +252,7 @@ export default function Dashboard({ produk, transaksi }) {
       {/* Row 3: Statistik Lain & Stok Rendah */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Statistik Tambahan */}
-        <div className="bg-white border border-gray-200 p-5 square">
+        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="text-green-500" size={18} />
             <h3 className="font-semibold">Statistik Warung</h3>
@@ -281,7 +281,7 @@ export default function Dashboard({ produk, transaksi }) {
         </div>
 
         {/* Barang Mau Habis */}
-        <div className="bg-white border border-gray-200 p-5 square">
+        <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <AlertTriangle className="text-red-500" size={18} />
@@ -328,7 +328,7 @@ export default function Dashboard({ produk, transaksi }) {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white border border-gray-200 p-5 square">
+      <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
         <div className="flex items-center gap-2 mb-4">
           <ShoppingCart className="text-primary" size={18} />
           <h3 className="font-semibold">Aksi Cepat</h3>

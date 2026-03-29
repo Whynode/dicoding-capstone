@@ -94,7 +94,7 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
               type="text"
               value={form.nama}
               onChange={(e) => setForm({ ...form, nama: e.target.value })}
-              className="w-full border border-gray-200 px-4 py-2 square focus:outline-none focus:border-primary"
+              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
               placeholder="Misal: Nasi Goreng"
             />
           </div>
@@ -106,7 +106,7 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
             <select
               value={form.kategori}
               onChange={(e) => setForm({ ...form, kategori: e.target.value })}
-              className="w-full border border-gray-200 px-4 py-2 square focus:outline-none focus:border-primary bg-white"
+              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary bg-white"
             >
               <option value="">Pilih Kategori</option>
               {kategoriOptions.map((kategori) => (
@@ -126,7 +126,7 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
                 type="number"
                 value={form.harga}
                 onChange={(e) => setForm({ ...form, harga: e.target.value })}
-                className="w-full border border-gray-200 px-4 py-2 square focus:outline-none focus:border-primary"
+                className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
                 placeholder="Rp"
                 min="0"
               />
@@ -140,7 +140,7 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
                 type="number"
                 value={form.modal}
                 onChange={(e) => setForm({ ...form, modal: e.target.value })}
-                className="w-full border border-gray-200 px-4 py-2 square focus:outline-none focus:border-primary"
+                className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
                 placeholder="Rp"
                 min="0"
               />
@@ -155,7 +155,7 @@ export default function ModalProduk({ isOpen, onClose, onSave, produk }) {
               type="number"
               value={form.stok}
               onChange={(e) => setForm({ ...form, stok: e.target.value })}
-              className="w-full border border-gray-200 px-4 py-2 square focus:outline-none focus:border-primary"
+              className="w-full shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
               placeholder="Jumlah stok"
               min="0"
             />

@@ -69,19 +69,19 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
         </button>
       </div>
 
-      <div className="bg-white border border-gray-200 p-4 square">
+      <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 p-4 square">
         <div className="flex flex-col sm:flex-row gap-4">
           <input
             type="text"
             placeholder="Cari barang..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 border border-gray-200 px-4 py-2 square focus:outline-none focus:border-primary"
+            className="flex-1 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary"
           />
           <select
             value={filterKategori}
             onChange={(e) => setFilterKategori(e.target.value)}
-            className="border border-gray-200 px-4 py-2 square focus:outline-none focus:border-primary bg-white"
+            className="shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 px-4 py-2 square focus:outline-none focus:border-primary bg-white"
           >
             <option value="">Semua Kategori</option>
             {kategoriList.map((kategori) => (
@@ -120,7 +120,7 @@ export default function Produk({ produk, onTambah, onEdit, onHapus, onHapusTerpi
         </div>
       )}
 
-      <div className="bg-white border border-gray-200 square overflow-hidden">
+      <div className="bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-gray-100 square overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
