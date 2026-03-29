@@ -11,14 +11,10 @@ export default function Sidebar({ activePage, setActivePage }) {
     { name: 'Pengaturan', icon: Settings },
   ]
 
+  // Digunakan sebagai Bottom Navigation ala GoPay untuk mobile & desktop
   return (
-    <div className="w-64 bg-gray-900 text-white h-screen flex flex-col">
-      <div className="p-6 border-b border-gray-700">
-        <h1 className="text-2xl font-bold tracking-tight">PELPAY</h1>
-        <p className="text-sm text-gray-400 mt-1">Warung Madura</p>
-      </div>
-
-      <nav className="flex-1 p-4 space-y-2">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2 sm:px-6 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+      <nav className="flex justify-between items-center h-16 max-w-2xl mx-auto">
         {menu.map((item) => {
           const Icon = item.icon
           const isActive = activePage === item.name
@@ -26,22 +22,20 @@ export default function Sidebar({ activePage, setActivePage }) {
             <button
               key={item.name}
               onClick={() => setActivePage(item.name)}
-              className={`w-full flex items-center gap-3 px-4 py-3 square transition-colors ${
-                isActive
-                  ? 'bg-primary text-white'
-                  : 'text-gray-300 hover:bg-gray-800'
+              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
+                isActive ? 'text-primary' : 'text-gray-400 hover:text-gray-900'
               }`}
             >
-              <Icon size={20} />
-              <span>{item.name}</span>
+              <div className={`p-1 rounded-full ${isActive ? 'bg-orange-50' : 'bg-transparent'}`}>
+                <Icon size={isActive ? 22 : 20} className={isActive ? 'stroke-[2.5px]' : ''} />
+              </div>
+              <span className={`text-[10px] sm:text-[11px] truncate ${isActive ? 'font-semibold' : 'font-medium'}`}>
+                {item.name}
+              </span>
             </button>
           )
         })}
       </nav>
-
-      <div className="p-4 border-t border-gray-700">
-        <p className="text-xs text-gray-500">v1.0.0</p>
-      </div>
     </div>
   )
 }

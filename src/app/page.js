@@ -349,12 +349,17 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <Sidebar activePage={activePage} setActivePage={setActivePage} />
+    <div className="min-h-screen bg-gray-50 pb-24">
+      {/* Header simpel untuk branding */}
+      <header className="bg-white border-b border-gray-200 p-4 sticky top-0 z-40 flex items-center justify-center shadow-sm square">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-primary">PELPAY</h1>
+      </header>
 
-      <main className="flex-1 overflow-y-auto p-8">
+      <main className="p-4 sm:p-8 max-w-5xl mx-auto">
         {renderPage()}
       </main>
+
+      <Sidebar activePage={activePage} setActivePage={setActivePage} />
 
       <ModalProduk
         isOpen={modalProdukOpen}
