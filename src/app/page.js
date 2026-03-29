@@ -9,6 +9,7 @@ import ModalProduk from '../components/ModalProduk'
 import ModalDetail from '../components/ModalDetail'
 import { seedProduk } from '../data/produk'
 import { generateId } from '../utils/helpers'
+import { supabase } from '../utils/supabase'
 
 export default function Home() {
   const [activePage, setActivePage] = useState('Dashboard')
@@ -20,79 +21,86 @@ export default function Home() {
   const [transaksiDipilih, setTransaksiDipilih] = useState(null)
   const [modalDetailOpen, setModalDetailOpen] = useState(false)
 
-  // load data dari localStorage pas pertama kali
+  // load data dari Supabase saat awal render
   useEffect(() => {
-    const savedProduk = localStorage.getItem('pelpay_produk')
-    const savedTransaksi = localStorage.getItem('pelpay_transaksi')
+    const fetchData = async () => {
+      // Ambil data produk
+      const { data: produkData, error: errProduk } = await supabase
+        .from('produk')
+        .select('*')
+        .order('created_at', { ascending: true })
 
-    // jika ada data produk di localStorage, migrasikan ke bentuk konsisten
-    if (savedProduk) {
-      try {
-        const parsed = JSON.parse(savedProduk)
-        const migrated = Array.isArray(parsed)
-          ? parsed.map((p) => ({
-              id: p.id || generateId(),
-              nama: p.nama || '',
-              harga: p.harga || 0,
-              stok: p.stok || 0,
-              modal: p.modal || 0,
-              kategori: p.kategori || '',
-            }))
-          : []
-        setProduk(migrated)
-      } catch (e) {
+      if (errProduk) {
+        console.error('Gagal mengambil produk:', errProduk)
         setProduk([])
-        localStorage.setItem('pelpay_produk', JSON.stringify([]))
+      } else {
+        setProduk(produkData || [])
       }
-    } else {
-      // tidak seed, mulai dari kosong
-      setProduk([])
-      localStorage.setItem('pelpay_produk', JSON.stringify([]))
+
+      // Ambil data transaksi
+      const { data: transaksiData, error: errTransaksi } = await supabase
+        .from('transaksi')
+        .select('*')
+        .order('tanggal', { ascending: true })
+
+      if (errTransaksi) {
+        console.error('Gagal mengambil transaksi:', errTransaksi)
+        setTransaksi([])
+      } else {
+        setTransaksi(transaksiData || [])
+      }
     }
 
-    if (savedTransaksi) {
-      setTransaksi(JSON.parse(savedTransaksi))
-    }
+    fetchData()
   }, [])
 
-  // save produk ke localStorage pas ada perubahan
-  useEffect(() => {
-    // selalu save, termasuk saat array kosong
-    localStorage.setItem('pelpay_produk', JSON.stringify(produk))
-  }, [produk])
-
-  // save transaksi ke localStorage pas ada perubahan
-  useEffect(() => {
-    if (transaksi.length > 0) {
-      localStorage.setItem('pelpay_transaksi', JSON.stringify(transaksi))
-    }
-  }, [transaksi])
-
   // tambah produk baru atau update
-  const simpanProduk = (data) => {
+  const simpanProduk = async (data) => {
     if (data.id) {
-      // update produk yang ada
-      setProduk((prev) =>
-        prev.map((p) => (p.id === data.id ? { ...p, ...data } : p))
-      )
+      // update produk yang ada ke supabase
+      const { data: updated, error } = await supabase
+        .from('produk')
+        .update(data)
+        .eq('id', data.id)
+        .select()
+        .single()
+
+      if (!error && updated) {
+        setProduk((prev) => prev.map((p) => (p.id === data.id ? updated : p)))
+      }
     } else {
-      // tambah produk baru
+      // tambah produk baru ke supabase
       const newProduk = {
         ...data,
         id: generateId(),
       }
-      setProduk((prev) => [...prev, newProduk])
+      
+      const { data: inserted, error } = await supabase
+        .from('produk')
+        .insert([newProduk])
+        .select()
+        .single()
+
+      if (!error && inserted) {
+        setProduk((prev) => [...prev, inserted])
+      }
     }
   }
 
   // hapus produk
-  const hapusProduk = (id) => {
-    setProduk((prev) => prev.filter((p) => p.id !== id))
+  const hapusProduk = async (id) => {
+    const { error } = await supabase.from('produk').delete().eq('id', id)
+    if (!error) {
+      setProduk((prev) => prev.filter((p) => p.id !== id))
+    }
   }
 
   // hapus beberapa produk sekaligus
-  const hapusTerpilihProduk = (ids) => {
-    setProduk((prev) => prev.filter((p) => !ids.includes(p.id)))
+  const hapusTerpilihProduk = async (ids) => {
+    const { error } = await supabase.from('produk').delete().in('id', ids)
+    if (!error) {
+      setProduk((prev) => prev.filter((p) => !ids.includes(p.id)))
+    }
   }
 
   // tambah ke keranjang
@@ -149,10 +157,10 @@ export default function Home() {
   }
 
   // simpan order / bayar
-  const simpanOrder = () => {
+  const simpanOrder = async () => {
     if (keranjang.length === 0) return
 
-    // kurangi stok
+    // kurangi stok frontend
     const produkBaru = produk.map((p) => {
       const itemKeranjang = keranjang.find((k) => k.produkId === p.id)
       if (itemKeranjang) {
@@ -160,7 +168,14 @@ export default function Home() {
       }
       return p
     })
-    setProduk(produkBaru)
+
+    // Update bulk produk ke supabase
+    const productsToUpdate = produkBaru.filter((p) =>
+      keranjang.some((k) => k.produkId === p.id)
+    )
+    if (productsToUpdate.length > 0) {
+      await supabase.from('produk').upsert(productsToUpdate)
+    }
 
     // buat transaksi baru
     const total = keranjang.reduce((sum, item) => sum + item.subtotal, 0)
@@ -171,9 +186,21 @@ export default function Home() {
       total: total,
     }
 
-    setTransaksi((prev) => [...prev, transaksiBaru])
-    setKeranjang([])
-    alert('Transaksi berhasil!')
+    // Insert transaksi
+    const { data: insertedTransaksi, error } = await supabase
+      .from('transaksi')
+      .insert([transaksiBaru])
+      .select()
+      .single()
+
+    if (!error && insertedTransaksi) {
+      setTransaksi((prev) => [...prev, insertedTransaksi])
+      setProduk(produkBaru)
+      setKeranjang([])
+      alert('Transaksi berhasil!')
+    } else {
+      alert('Terjadi error ketika menyimpan pesanan!')
+    }
   }
 
   // reset keranjang
@@ -200,9 +227,12 @@ export default function Home() {
   }
 
   // hapus transaksi
-  const hapusTransaksi = (id) => {
+  const hapusTransaksi = async (id) => {
     if (window.confirm('Yakin ingin hapus transaksi ini? Data akan hilang permanen.')) {
-      setTransaksi((prev) => prev.filter((t) => t.id !== id))
+      const { error } = await supabase.from('transaksi').delete().eq('id', id)
+      if (!error) {
+        setTransaksi((prev) => prev.filter((t) => t.id !== id))
+      }
     }
   }
 
